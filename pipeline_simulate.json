@@ -1,0 +1,89 @@
+{
+  "pipeline": {
+    "description": "Pipeline for parsing Postfix mail service logs based on Elastic Common Schema (ECS)",
+    "processors": [
+      {
+        "grok": {
+          "pattern_definitions": {
+            "SYSLOG_PREFIX": "%{SYSLOGTIMESTAMP} %{SYSLOGHOST} %{PROG:process.name}(?:\\[%{POSINT:process.pid}\\])?:",
+            "POSTFIX_CLIENT_INFO": "%{HOSTNAME:client.address}?\\[%{IP:client.ip}\\](:%{INT:client.port})?",
+            "POSTFIX_SMTP_STAGE": "(CONNECT|HELO|EHLO|STARTTLS|AUTH|MAIL( FROM)?|RCPT( TO)?|(end of )?DATA|RSET|UNKNOWN|END-OF-MESSAGE|VRFY|\\.)",
+            "POSTFIX_LOSTCONN": "(Connection timed out|No route to host|Connection refused|Network is unreachable|lost connection|timeout|SSL_accept error|-1)",
+            "POSTFIX_SMTPD_CONNECT": "connect from %{POSTFIX_CLIENT_INFO}",
+            "POSTFIX_SMTPD_DISCONNECT": "disconnect from %{POSTFIX_CLIENT_INFO}( %{GREEDYDATA:postfix_command_counter_data})?",
+            "POSTFIX_SMTPD_LOSTCONN": "%{POSTFIX_LOSTCONN:postfix_smtpd_lostconn_data}( after %{POSTFIX_SMTP_STAGE:postfix_smtp_stage}( \\(%{INT} bytes\\))?)? from %{POSTFIX_CLIENT_INFO}(: %{GREEDYDATA:postfix_smtpd_lostconn_reason})?",
+            "POSTFIX_SMTPD": "%{POSTFIX_SMTPD_CONNECT}|%{POSTFIX_SMTPD_DISCONNECT}|%{POSTFIX_SMTPD_LOSTCONN}",
+            "POSTFIX_EVENT": "%{SYSLOG_PREFIX} %{POSTFIX_SMTPD}"
+          },
+          "patterns": [
+            "%{POSTFIX_EVENT}",
+            "%{SYSLOGTIMESTAMP:syslog_timestamp} %{GREEDYDATA}"
+          ],
+          "field": "message",
+          "ignore_missing": true
+        }
+      },
+      {
+        "geoip": {
+          "field": "client.ip",
+          "target_field": "geo.location"
+        }
+      }
+    ],
+    "on_failure": [
+      {
+        "set": {
+          "field": "error.message",
+          "value": "{{ _ingest.on_failure_message }}"
+        }
+      }
+    ]
+  },
+  "docs": [
+    {
+      "_source": {
+        "message": "Apr  5 17:54:21 strand postfix/smtpd[10827]: lost connection after RCPT from adsl-77-86-76-98.karoo.KCOM.COM[77.86.76.98]"
+      }
+    },
+    {
+      "_source": {
+        "message": "Apr  5 17:54:30 strand postfix/smtpd[10827]: connect from unknown[185.170.209.188]"
+      }
+    },
+    {
+      "_source": {
+        "message": "Apr  5 17:54:21 strand postfix/smtpd[10827]: disconnect from adsl-77-86-76-98.karoo.KCOM.COM[77.86.76.98] ehlo=1 mail=1 rcpt=0/1 commands=2/3"
+      }
+    },
+    {
+      "_source": {
+        "message": "Apr  5 17:54:30 strand postfix/smtpd[10827]: NOQUEUE: reject: RCPT from unknown[185.170.209.188]: 450 4.7.1 Client host rejected: cannot find your reverse hostname, [185.170.209.188]; from=<8846-8422-212957-2264-cram=domain.tld@mail.researchconclude.bid> to=<cram@domain.tld> proto=ESMTP helo=<austin.researchconclude.bid>"
+      }
+    },
+    {
+      "_source": {
+        "message": "Apr  5 17:54:49 strand postfix/smtpd[10827]: 98AEDA06BC: client=o780.emails.bradsdeals.com[167.89.25.242]"
+      }
+    },
+    {
+      "_source": {
+        "message": "Apr  5 17:54:49 strand postfix/cleanup[10840]: 98AEDA06BC: message-id=<mx6uP6mfTTuDn6rxYiVTog@ismtpd0036p1iad1.sendgrid.net>"
+      }
+    },
+    {
+      "_source": {
+        "message": "Apr  5 17:54:50 strand postfix/qmgr[29983]: 98AEDA06BC: from=<bounces+5595449-1d87-cram=domain.tld@emails.bradsdeals.com>, size=119460, nrcpt=1 (queue active)"
+      }
+    },
+    {
+      "_source": {
+        "message": "Apr  5 17:54:50 strand postfix/smtp[10841]: 98AEDA06BC: to=<cram@domain.tld>, relay=smtp.domain.tld[10.50.107.12]:2525, delay=2.1, delays=1.2/0.08/0.25/0.48, dsn=2.0.0, status=sent (250 2.0.0 Ok: queued as 7E5372C0C21)"
+      }
+    },
+    {
+      "_source": {
+        "message": "Apr  5 17:54:50 strand postfix/qmgr[29983]: 98AEDA06BC: removed"
+      }
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+POST _reindex
+{
+  "source": {
+    "index": "filebeat-6.5.4-2019.04.*",
+    "type": "doc",
+    "query": {
+      "bool": {
+        "must": [
+          {
+            "match_phrase": {
+              "message": "connect from"
+            }
+          },
+          {
+            "term": {
+              "source": {
+                "value": "/var/log/mail.log"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "dest": {
+    "index": "rdx_postfix_logs",
+    "pipeline": "postfix-events-acs"
+  }
+}

@@ -1,0 +1,40 @@
+{
+    "description": "Pipeline for parsing Postfix mail service logs based on Elastic Common Schema (ECS)",
+    "processors": [
+        {
+            "grok": {
+                "pattern_definitions": {
+                    "SYSLOG_PREFIX": "%{SYSLOGTIMESTAMP} %{SYSLOGHOST} %{PROG:process.name}(?:\\[%{POSINT:process.pid}\\])?:",
+                    "POSTFIX_CLIENT_INFO": "%{HOSTNAME:client.address}?\\[%{IP:client.ip}\\](:%{INT:client.port})?",
+                    "POSTFIX_SMTP_STAGE": "(CONNECT|HELO|EHLO|STARTTLS|AUTH|MAIL( FROM)?|RCPT( TO)?|(end of )?DATA|RSET|UNKNOWN|END-OF-MESSAGE|VRFY|\\.)",
+                    "POSTFIX_LOSTCONN": "(Connection timed out|No route to host|Connection refused|Network is unreachable|lost connection|timeout|SSL_accept error|-1)",
+                    "POSTFIX_SMTPD_CONNECT": "connect from %{POSTFIX_CLIENT_INFO}",
+                    "POSTFIX_SMTPD_DISCONNECT": "disconnect from %{POSTFIX_CLIENT_INFO}( %{GREEDYDATA:postfix_command_counter_data})?",
+                    "POSTFIX_SMTPD_LOSTCONN": "%{POSTFIX_LOSTCONN:postfix_smtpd_lostconn_data}( after %{POSTFIX_SMTP_STAGE:postfix_smtp_stage}( \\(%{INT} bytes\\))?)? from %{POSTFIX_CLIENT_INFO}(: %{GREEDYDATA:postfix_smtpd_lostconn_reason})?",
+                    "POSTFIX_SMTPD": "%{POSTFIX_SMTPD_CONNECT}|%{POSTFIX_SMTPD_DISCONNECT}|%{POSTFIX_SMTPD_LOSTCONN}",
+                    "POSTFIX_EVENT": "%{SYSLOG_PREFIX} %{POSTFIX_SMTPD}"
+                },
+                "patterns": [
+                    "%{POSTFIX_EVENT}",
+                    "%{SYSLOGTIMESTAMP:syslog_timestamp} %{GREEDYDATA}"
+                ],
+                "field": "message",
+                "ignore_missing": true
+            }
+        },
+        {
+            "geoip": {
+                "field": "client.ip",
+                "target_field": "geo.location"
+            }
+        }
+    ],
+    "on_failure": [
+        {
+            "set": {
+                "field": "error.message",
+                "value": "{{ _ingest.on_failure_message }}"
+            }
+        }
+    ]
+}
