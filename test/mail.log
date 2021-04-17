@@ -1,0 +1,20 @@
+Apr  5 17:54:21 strand postfix/smtpd[10827]: lost connection after RCPT from adsl-77-86-76-98.karoo.KCOM.COM[77.86.76.98]
+Apr  5 17:54:30 strand postfix/smtpd[10827]: connect from unknown[185.170.209.188]
+Apr  5 17:54:21 strand postfix/smtpd[10827]: disconnect from adsl-77-86-76-98.karoo.KCOM.COM[77.86.76.98] ehlo=1 mail=1 rcpt=0/1 commands=2/3
+Apr  5 17:54:30 strand postfix/smtpd[10827]: NOQUEUE: reject: RCPT from unknown[185.170.209.188]: 450 4.7.1 Client host rejected: cannot find your reverse hostname, [185.170.209.188]; from=<8846-8422-212957-2264-cram=domain.tld@mail.researchconclude.bid> to=<cram@domain.tld> proto=ESMTP helo=<austin.researchconclude.bid>
+Apr  5 17:54:49 strand postfix/smtpd[10827]: 98AEDA06BC: client=o780.emails.bradsdeals.com[167.89.25.242]
+Apr  5 17:54:49 strand postfix/cleanup[10840]: 98AEDA06BC: message-id=<mx6uP6mfTTuDn6rxYiVTog@ismtpd0036p1iad1.sendgrid.net>"
+Apr  5 17:54:50 strand postfix/qmgr[29983]: 98AEDA06BC: from=<bounces+5595449-1d87-cram=domain.tld@emails.bradsdeals.com>, size=119460, nrcpt=1 (queue active)
+Apr  5 17:54:50 strand postfix/smtp[10841]: 98AEDA06BC: to=<cram@domain.tld>, relay=smtp.domain.tld[10.50.107.12]:2525, delay=2.1, delays=1.2/0.08/0.25/0.48, dsn=2.0.0, status=sent (250 2.0.0 Ok: queued as 7E5372C0C21)
+Apr  5 17:54:50 strand postfix/qmgr[29983]: 98AEDA06BC: removed"
+Apr  5 20:30:28 strand postfix/smtpd[11722]: NOQUEUE: reject: RCPT from mail-a.mail-lab38.com[83.167.229.55]: 554 5.7.1 Service unavailable; Client host [83.167.229.
+Apr 12 15:04:48 strand postfix/qmgr[994]: D6C99A035C: from=<baz@domain.tld>, size=675606, nrcpt=1 (queue active)
+Apr 12 15:08:41 strand postfix/qmgr[994]: E163EA035C: from=<baz@domain.tld>, size=357099, nrcpt=1 (queue active)
+Apr 12 15:11:41 strand postfix/qmgr[994]: DF344A035C: from=<baz@domain.tld>, size=426586, nrcpt=1 (queue active)
+Apr 12 15:18:41 strand postfix/qmgr[994]: EE238A01A9: from=<baz@domain.tld>, size=448131, nrcpt=1 (queue active)
+Apr 13 20:23:16 strand postfix/qmgr[994]: 66D87A079A: from=<baz@domain.tld>, size=427064, nrcpt=1 (queue active)
+Apr 14 15:05:39 strand postfix/qmgr[971]: AA393A0639: from=<baz@domain.tld>, size=7097, nrcpt=1 (queue active)
+Apr 15 15:33:04 strand postfix/qmgr[971]: 6A235A01F6: from=<baz@domain.tld>, size=71792, nrcpt=1 (queue active)
+Apr 16 12:59:19 strand postfix/qmgr[971]: 1A607A07A4: from=<bazzickle@domain.tld>, size=133171, nrcpt=1 (queue active)
+Apr 16 20:11:18 strand postfix/qmgr[971]: 84E22A0847: from=<bazzickle@domain.tld>, size=41424, nrcpt=1 (queue active)
+Apr 17 01:48:23 strand postfix/qmgr[971]: B6CEBA02F4: from=<baz@domain.tld>, size=6557, nrcpt=1 (queue active)
