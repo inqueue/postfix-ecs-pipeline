@@ -1,0 +1,143 @@
+{
+  "template": {
+    "mappings": {
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        },
+        "message": {
+          "type": "text"
+        },
+        "client": {
+          "properties": {
+            "ip": {
+              "type": "ip"
+            },
+            "address": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "port": {
+              "type": "long"
+            },
+            "geo": {
+              "properties": {
+                "location": {
+                  "properties": {
+                    "continent_name": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    },
+                    "country_iso_code": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    },
+                    "country_name": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    },
+                    "location": {
+                      "type": "geo_point"
+                    },
+                    "region_iso_code": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    },
+                    "region_name": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "agent": {
+          "properties": {
+            "ephemmeral_id": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "hostname": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "id": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "name": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "type": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "version": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "ecs": {
+          "properties": {
+            "version": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "host": {
+          "properties": {
+            "name": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "log": {
+          "properties": {
+            "offset": {
+              "type": "long"
+            },
+            "file": {
+              "properties": {
+                "path": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
+        "process": {
+          "properties": {
+            "name": {
+              "type": "keyword",
+              "ignore_above": 256,
+              "fields": {
+                "text": {
+                  "type": "text"
+                }
+              }
+            },
+            "pid": {
+              "type": "long"
+            }
+          }
+        },
+        "input": {
+          "properties": {
+            "type": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        }
+      }
+    }
+  },
+  "version": "1"
+}  

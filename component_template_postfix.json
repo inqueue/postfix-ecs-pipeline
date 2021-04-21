@@ -1,0 +1,55 @@
+{
+  "template": {
+    "mappings": {
+      "properties": {
+        "postfix": {
+          "properties": {
+            "smtpd_lostconn_data": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "smtpd_lostconn_reason": {
+              "type": "keyword",
+              "ignore_above": 256,
+              "fields": {
+                "text": {
+                  "type": "text"
+                }
+              }
+            },
+            "smtp_stage": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "command_counter_data": {
+              "type": "text"
+            },
+            "keyvalue_data": {
+              "type": "text"
+            },
+            "queue_id": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "status_code": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "status_code_enhanced": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "status_data": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "status_message": {
+              "type": "text"
+            }
+          }
+        }
+      }
+    }
+  },
+  "version": "1"
+}
