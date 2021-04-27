@@ -1,0 +1,49 @@
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "actions": {
+          "rollover": {
+            "max_age": "1d",
+            "max_size": "5gb",
+            "max_docs": 5000
+          },
+          "set_priority": {
+            "priority": 100
+          },
+          "forcemerge": {
+            "max_num_segments": 1,
+            "index_codec": "best_compression"
+          },
+          "shrink": {
+            "number_of_shards": 1
+          },
+          "searchable_snapshot": {
+            "snapshot_repository": "found-snapshots"
+          },
+          "readonly": {}
+        },
+        "min_age": "0ms"
+      },
+      "warm": {
+        "min_age": "2d",
+        "actions": {
+          "set_priority": {
+            "priority": 50
+          }
+        }
+      },
+      "cold": {
+        "min_age": "3d",
+        "actions": {
+          "searchable_snapshot": {
+            "snapshot_repository": "found-snapshots"
+          },
+          "set_priority": {
+            "priority": 0
+          }
+        }
+      }
+    }
+  }
+}

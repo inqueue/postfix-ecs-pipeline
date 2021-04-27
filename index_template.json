@@ -1,0 +1,17 @@
+{
+  "template": {
+    "index_patterns": ["logs-postfix-default*"],
+    "data_stream": {},
+    "composed_of": ["ecs", "postfix"],
+    "settings": {
+      "index": {
+        "number_of_shards": 2,
+        "number_of_replicas": 1,
+        "lifecycle.name": "postfix-logs-policy"
+      }
+    },
+    "_meta": {
+      "description": "Index template for a Postfix logs data stream."
+    }
+  }
+}
